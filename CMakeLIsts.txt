@@ -1,0 +1,38 @@
+cmake_minimum_required(VERSION 3.0)
+
+
+option(test "Build all tests." ON) # Makes boolean 'test' available
+
+project(cmake-gtest-example)
+
+
+if(MSVC)
+  set(variables CMAKE_CXX_FLAGS_DEBUG 
+                CMAKE_CXX_FLAGS_RELEASE
+                CMAKE_CXX_FLAGS_RELWITHDEBINFO 
+                CMAKE_CXX_FLAGS_MINSIZEREL)
+  foreach(variable ${variables})
+    if(${variable} MATCHES "/MD")
+      string(REGEX REPLACE "/MD" "/MT" ${variable} "${${variable}}")
+    endif()
+  endforeach()
+endif()
+
+
+
+# googletest path
+add_subdirectory(./External/googletest-release-1.10.0)
+
+# set include source
+set(IncludeDir ./Include)
+set(ExampleDllSrc ./Src/Example.cpp )
+set(ExampleExeSrc ./Src/HelloWorld.cpp)
+
+add_library(ExampleDll ${ExampleDllSrc})
+target_include_directories(ExampleDll PUBLIC ${IncludeDir})
+add_executable(ExampleExe ${ExampleExeSrc})
+
+# test
+enable_testing()
+add_subdirectory(./Test)
+

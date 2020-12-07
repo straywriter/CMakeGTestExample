@@ -4,12 +4,12 @@ option(test "Build all tests." ON) # Makes boolean 'test' available
 project(test)
 
 
-file(GLOB TestSrc . *.cpp)
+file(GLOB TestSrc . *.cpp *.cc)
 
 # enable_testing()
 
 find_package(Threads REQUIRED)
-# include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 foreach(TestFile ${TestSrc})
   get_filename_component(TestFileName ${TestFile} NAME_WE)
